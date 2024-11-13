@@ -1,5 +1,5 @@
 <?php
-include '../db/database.php';
+include '../film-kartun-favorit/db/database.php';
 
 // Fetch all movies
 function fetchMovies($db) {

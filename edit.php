@@ -1,9 +1,9 @@
 <?php
-include '../db/database.php';
+include '../film-kartun-favorit/db/database.php';
 include 'functions.php';
 
 $id = $_GET['id'];
-$db = new mysqli($hostname, $username, $password, "kartun");
+$db = new mysqli($hostname, $username, $password, "movies");
 
 $sql = "SELECT * FROM movies WHERE movie_id = $id";
 $result = $db->query($sql);

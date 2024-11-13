@@ -1,5 +1,5 @@
 <?php
-include '../db/database.php';
+include '../film-favorit/db/database.php';
 include 'functions.php';
 
 $id = $_GET['id'];
