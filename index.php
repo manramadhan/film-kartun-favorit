@@ -25,6 +25,8 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete') {
         resetMovieIds($db); 
         header('Location: index.php'); 
         exit;
+    } else {
+        echo "Gagal menghapus film.";
     }
 }
 
@@ -37,7 +39,10 @@ if (isset($_POST['rating']) && isset($_POST['movie_id'])) {
     $sql = "UPDATE movies SET rating = ? WHERE movie_id = ?";
     $stmt = $db->prepare($sql);
     $stmt->bind_param("ii", $rating, $movie_id);
-    $stmt->execute();
+    
+    if (!$stmt->execute()) {
+        echo "Error saat update rating: " . $stmt->error;
+    }
     
     // Menutup koneksi
     $stmt->close();
@@ -71,9 +76,9 @@ if (isset($_POST['rating']) && isset($_POST['movie_id'])) {
             <?php $no = 1; while ($movie = $movies->fetch_assoc()): ?>
                 <tr>
                     <td><?= $no++; ?></td>
-                    <td><?= $movie['title']; ?></td>
-                    <td><?= $movie['description']; ?></td>
-                    <td><?= $movie['release_year']; ?></td> 
+                    <td><?= htmlspecialchars($movie['title']); ?></td>
+                    <td><?= htmlspecialchars($movie['description']); ?></td>
+                    <td><?= htmlspecialchars($movie['release_year']); ?></td> 
                     <td class="rating"> <!-- Tampilan Rating menggunakan bintang -->
                         <form method="POST" action="index.php">
                             <?php
@@ -88,7 +93,7 @@ if (isset($_POST['rating']) && isset($_POST['movie_id'])) {
                             <input type="hidden" name="movie_id" value="<?= $movie['movie_id']; ?>">
                         </form>
                     </td>
-                    <td><img src="<?= $movie['image']; ?>" alt="<?= $movie['title']; ?>" width="100"></td>
+                    <td><img src="<?= htmlspecialchars($movie['image']); ?>" alt="<?= htmlspecialchars($movie['title']); ?>" width="100"></td>
                     <td>
                         <a href="edit.php?id=<?= $movie['movie_id']; ?>" class="btn">Edit</a>
                         <a href="?action=delete&id=<?= $movie['movie_id']; ?>" class="btn" onclick="return confirm('Anda yakin ingin menghapus film ini?');">Hapus</a>

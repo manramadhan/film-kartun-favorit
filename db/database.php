@@ -2,7 +2,7 @@
 $hostname = "localhost";
 $username = "root"; // Ganti jika perlu
 $password = "";     // Ganti jika perlu
-$db_name = "kartun"; // Nama database yang digunakan
+$db_name = "movies"; // Nama database yang digunakan
 
 // Buat koneksi ke database
 $conn = new mysqli($hostname, $username, $password);
@@ -13,13 +13,20 @@ if ($conn->connect_error) {
 }
 
 // Buat database jika belum ada
-$sql_create_db = "CREATE DATABASE IF NOT EXISTS kartun";
+$sql_create_db = "CREATE DATABASE IF NOT EXISTS movies";
 $conn->query($sql_create_db);
 
 // Pilih database
-$conn->select_db('kartun');
+$conn->select_db($db_name);
 
-// Buat tabel movies
+// Buat tabel categories jika belum ada
+$sql_create_categories_table = "CREATE TABLE IF NOT EXISTS categories (
+    category_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL
+)";
+$conn->query($sql_create_categories_table);
+
+// Buat tabel movies jika belum ada
 $sql_create_movies_table = "CREATE TABLE IF NOT EXISTS movies (
     movie_id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
@@ -32,7 +39,7 @@ $sql_create_movies_table = "CREATE TABLE IF NOT EXISTS movies (
 )";
 $conn->query($sql_create_movies_table);
 
-// Buat tabel ratings (jika ingin menggunakan tabel terpisah untuk rating)
+// Buat tabel ratings jika belum ada
 $sql_create_ratings_table = "CREATE TABLE IF NOT EXISTS ratings (
     rating_id INT PRIMARY KEY AUTO_INCREMENT,
     movie_id INT,
